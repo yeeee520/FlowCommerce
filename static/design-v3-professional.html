@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>设计稿 V3 - 专业商务风 | AI Agent 电商客服系统</title>
+<!--
+  设计风格：专业商务风 (Professional Enterprise SaaS)
+  设计理念：
+  - 蓝白配色，企业级 SaaS 产品感
+  - 清晰的信息层级和视觉权重
+  - 仪表盘式侧边栏，KPI 卡片、进度条
+  - 专业数据可视化风格，统计数值突出
+  - 高信息密度但不拥挤
+  - 严谨的网格对齐和间距系统
+-->
+<style>
+/* ============================================================
+   专业商务风 — 全局变量
+   ============================================================ */
+:root {
+  --bg-body: #f0f2f5;
+  --bg-white: #ffffff;
+  --bg-sidebar: #1a2332;
+  --bg-sidebar-hover: #232d3d;
+  --primary: #1a56db;
+  --primary-light: #e8f0fe;
+  --primary-dark: #1347b8;
+  --accent: #0ea5e9;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --text-sidebar: #c8d2de;
+  --text-sidebar-muted: #6b7a90;
+  --border: #e5e7eb;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-dropdown: 0 4px 12px rgba(0,0,0,0.1);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --topbar-h: 56px;
+  --sidebar-w: 280px;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { font-size: 14px; -webkit-font-smoothing: antialiased; }
+
+body {
+  background: var(--bg-body);
+  color: var(--text-primary);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ============================================================
+   顶部栏
+   ============================================================ */
+#topbar {
+  height: var(--topbar-h);
+  background: var(--bg-white);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; z-index: 100; flex-shrink: 0;
+}
+
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-left .logo-icon { color: var(--primary); display: flex; }
+.topbar-left .logo-text { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+
+.status-badge {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 14px; background: #ecfdf5;
+  border: 1px solid #a7f3d0; border-radius: var(--radius-sm);
+  font-size: 13px; font-weight: 600; color: var(--success);
+}
+.status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--success);
+  animation: dotPulse 2s ease-in-out infinite;
+}
+@keyframes dotPulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+.menu-btn {
+  width: 36px; height: 36px; border: 1px solid var(--border);
+  background: var(--bg-white); border-radius: var(--radius-sm);
+  cursor: pointer; color: var(--text-secondary);
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.menu-btn:hover { background: #f9fafb; border-color: #d1d5db; }
+
+/* ============================================================
+   主体布局
+   ============================================================ */
+#app-container { display: flex; flex: 1; overflow: hidden; }
+
+/* ============================================================
+   侧边栏 - 深色仪表盘风格
+   ============================================================ */
+#sidebar {
+  width: var(--sidebar-w); background: var(--bg-sidebar);
+  padding: 20px 16px; display: flex; flex-direction: column; gap: 16px;
+  overflow-y: auto; flex-shrink: 0;
+}
+
+.sidebar-section {
+  padding: 16px; background: rgba(255,255,255,0.04);
+  border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.06);
+}
+
+.sidebar-section-title {
+  font-size: 11px; font-weight: 700; color: var(--text-sidebar-muted);
+  text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.sidebar-section-title svg { color: var(--accent); }
+
+/* KPI 卡片 */
+.kpi-row {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  padding: 10px 0;
+}
+.kpi-row + .kpi-row { border-top: 1px solid rgba(255,255,255,0.05); }
+.kpi-label { font-size: 12px; color: var(--text-sidebar-muted); }
+.kpi-value { font-size: 22px; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; line-height: 1; }
+.kpi-value.small { font-size: 14px; font-weight: 600; }
+.kpi-value.success { color: var(--success); }
+
+/* 进度条 */
+.progress-bar {
+  margin-top: 4px; height: 4px; background: rgba(255,255,255,0.08);
+  border-radius: 2px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; border-radius: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.source-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 7px 0; font-size: 12px;
+}
+.source-item + .source-item { border-top: 1px solid rgba(255,255,255,0.04); }
+.source-name { color: var(--text-sidebar); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex:1; margin-right:10px; }
+.source-score {
+  color: var(--accent); font-weight: 700; font-size: 11px;
+  background: rgba(14,165,233,0.12); padding: 3px 10px; border-radius: 100px;
+}
+
+.btn-clear {
+  width: 100%; margin-top: 10px; padding: 10px;
+  border: 1px solid rgba(239,68,68,0.25); border-radius: var(--radius-sm);
+  background: rgba(239,68,68,0.08); color: #f87171;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: all .15s;
+}
+.btn-clear:hover { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.4); }
+
+/* ============================================================
+   主聊天区
+   ============================================================ */
+#main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; background: var(--bg-white); }
+.chat-messages { flex: 1; overflow-y: auto; padding: 28px 36px; display: flex; flex-direction: column; gap: 22px; }
+
+/* 欢迎界面 */
+.welcome-screen {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center; padding: 40px;
+}
+.welcome-icon { color: var(--primary); opacity: .35; margin-bottom: 24px; }
+.welcome-title { font-size: 24px; font-weight: 800; margin-bottom: 8px; color: var(--text-primary); }
+.welcome-subtitle { font-size: 14px; color: var(--text-secondary); margin-bottom: 36px; max-width: 400px; }
+.quick-qs { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 520px; }
+.quick-btn {
+  padding: 10px 20px; background: var(--bg-white); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 13px; color: var(--text-secondary);
+  cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 8px;
+  box-shadow: var(--shadow-card);
+}
+.quick-btn:hover {
+  background: var(--primary-light); border-color: var(--primary);
+  color: var(--primary); transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(26,86,219,0.12);
+}
+.quick-btn svg { color: var(--primary); flex-shrink: 0; }
+
+/* 消息 */
+.message { display: flex; flex-direction: column; }
+.message.user { align-items: flex-end; }
+.message.assistant { align-items: flex-start; }
+
+.msg-header {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 4px;
+  font-size: 12px; color: var(--text-muted); font-weight: 500;
+}
+.message.user .msg-header { flex-direction: row-reverse; }
+
+.msg-avatar {
+  width: 32px; height: 32px; border-radius: var(--radius-sm); display: flex;
+  align-items: center; justify-content: center; font-size: 13px; font-weight: 700;
+}
+.message.user .msg-avatar { background: var(--primary); color: #fff; }
+.message.assistant .msg-avatar { background: var(--primary-light); color: var(--primary); }
+
+.bubble {
+  max-width: 66%; padding: 14px 18px; border-radius: var(--radius-md);
+  font-size: 14px; line-height: 1.65; word-wrap: break-word;
+}
+.message.user .bubble {
+  background: var(--primary); color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.message.assistant .bubble {
+  background: #f9fafb; color: var(--text-primary);
+  border: 1px solid var(--border); border-bottom-left-radius: 4px;
+}
+
+.msg-time { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+/* 来源标签 */
+.msg-sources { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+.source-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; background: var(--primary-light);
+  border: 1px solid rgba(26,86,219,0.15); border-radius: 100px;
+  font-size: 11px; color: var(--primary); font-weight: 500;
+}
+.source-tag .tag-score { color: var(--success); font-weight: 700; }
+
+/* 输入区 */
+.input-area {
+  padding: 12px 24px 18px;
+  background: var(--bg-white); border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.input-row { display: flex; align-items: flex-end; }
+.input-wrapper {
+  flex: 1; display: flex; align-items: flex-end; gap: 8px;
+  background: #f9fafb; border: 1.5px solid var(--border);
+  border-radius: var(--radius-md); padding: 6px 6px 6px 18px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.input-wrapper:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(26,86,219,0.08);
+}
+.chat-input {
+  flex: 1; border: none; outline: none; background: transparent;
+  font-size: 14px; font-family: inherit; color: var(--text-primary);
+  resize: none; padding: 7px 0; max-height: 100px; line-height: 1.5;
+}
+.chat-input::placeholder { color: var(--text-muted); }
+
+.send-btn {
+  width: 40px; height: 40px; border: none; border-radius: var(--radius-sm);
+  background: var(--primary); color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s; flex-shrink: 0;
+}
+.send-btn:hover { background: var(--primary-dark); }
+.send-btn:active { transform: scale(.96); }
+
+.input-opts {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px;
+}
+.stream-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+.stream-toggle input { display: none; }
+.toggle-track {
+  width: 38px; height: 22px; background: #d1d5db; border-radius: 11px;
+  position: relative; transition: background .25s;
+}
+.toggle-track::after {
+  content: ''; position: absolute; top: 2px; left: 2px;
+  width: 18px; height: 18px; background: #fff; border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0,0,0,.1); transition: transform .25s;
+}
+.stream-toggle input:checked + .toggle-track { background: var(--primary); }
+.stream-toggle input:checked + .toggle-track::after { transform: translateX(16px); }
+.toggle-label { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+.input-hint { font-size: 12px; color: var(--text-muted); }
+
+/* Toast */
+.toast-container {
+  position: fixed; top: 72px; right: 24px; z-index: 1000;
+  display: flex; flex-direction: column; gap: 8px; pointer-events: none;
+}
+.toast {
+  padding: 12px 18px; background: var(--bg-white); border-radius: var(--radius-md);
+  box-shadow: var(--shadow-dropdown); font-size: 13px; color: var(--text-primary);
+  border-left: 4px solid var(--primary); pointer-events: auto;
+  font-weight: 500;
+}
+</style>
+</head>
+<body>
+
+<!-- 顶部栏 -->
+<header id="topbar">
+  <div class="topbar-left">
+    <div class="logo-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+    </div>
+    <span class="logo-text">AI Agent 电商客服系统</span>
+  </div>
+  <div class="topbar-right">
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      <span>系统运行中</span>
+    </div>
+    <button class="menu-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- 主体 -->
+<div id="app-container">
+  <!-- 侧边栏 - 深色仪表盘 -->
+  <aside id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        知识库状态
+      </div>
+      <div class="kpi-row">
+        <span class="kpi-label">文档总数</span>
+        <span class="kpi-value">42</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%;"></div></div>
+      <div class="kpi-row">
+        <span class="kpi-label">Collection</span>
+        <span class="kpi-value small">ecommerce_kb</span>
+      </div>
+      <div class="kpi-row">
+        <span class="kpi-label">系统状态</span>
+        <span class="kpi-value small success">正常</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        检索来源统计
+      </div>
+      <div class="source-item"><span class="source-name">商品FAQ手册.pdf</span><span class="source-score">92% x12</span></div>
+      <div class="source-item"><span class="source-name">退换货政策.docx</span><span class="source-score">88% x8</span></div>
+      <div class="source-item"><span class="source-name">支付方式说明.md</span><span class="source-score">95% x5</span></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        会话信息
+      </div>
+      <div class="kpi-row">
+        <span class="kpi-label">消息数</span>
+        <span class="kpi-value" style="font-size:28px;">6</span>
+      </div>
+      <button class="btn-clear">清除会话</button>
+    </div>
+  </aside>
+
+  <!-- 聊天主区 -->
+  <main id="main-content">
+    <div class="chat-messages">
+      <div class="message user">
+        <div class="msg-header"><div class="msg-avatar">我</div><span>我</span></div>
+        <div class="bubble">如何查询我的订单状态？</div>
+        <div class="msg-time">14:22</div>
+      </div>
+
+      <div class="message assistant">
+        <div class="msg-header"><div class="msg-avatar">AI</div><span>AI 客服助手</span></div>
+        <div class="bubble">
+          您好！查询订单状态有以下几种方式：<br><br>
+          <strong>1. 登录账户</strong>：进入「我的订单」页面即可查看所有订单及当前状态。<br>
+          <strong>2. 输入订单号</strong>：在搜索框中直接输入订单号进行查询。<br>
+          <strong>3. 提供手机号</strong>：告诉我您的注册手机号，我可以帮您查询。<br><br>
+          需要我帮您进一步查询吗？
+        </div>
+        <div class="msg-sources">
+          <span class="source-tag">商品FAQ手册.pdf <span class="tag-score">92%</span></span>
+          <span class="source-tag">退换货政策.docx <span class="tag-score">88%</span></span>
+        </div>
+        <div class="msg-time">14:22</div>
+      </div>
+
+      <div class="message user">
+        <div class="msg-header"><div class="msg-avatar">我</div><span>我</span></div>
+        <div class="bubble">支持哪些支付方式？</div>
+        <div class="msg-time">14:23</div>
+      </div>
+
+      <div class="message assistant">
+        <div class="msg-header"><div class="msg-avatar">AI</div><span>AI 客服助手</span></div>
+        <div class="bubble">
+          我们支持多种支付方式，您可以根据需求选择：<br><br>
+          <strong>在线支付</strong>：微信支付、支付宝、银联在线<br>
+          <strong>货到付款</strong>：部分城市支持<br>
+          <strong>分期付款</strong>：花呗分期、信用卡分期（3/6/12期）<br><br>
+          所有支付方式均通过加密通道处理，保障您的资金安全。
+        </div>
+        <div class="msg-sources">
+          <span class="source-tag">支付方式说明.md <span class="tag-score">95%</span></span>
+        </div>
+        <div class="msg-time">14:23</div>
+      </div>
+    </div>
+
+    <!-- 输入区 -->
+    <div class="input-area">
+      <div class="input-row">
+        <div class="input-wrapper">
+          <textarea class="chat-input" placeholder="输入你的问题... (Enter 发送，Shift+Enter 换行)" rows="1"></textarea>
+          <button class="send-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="input-opts">
+        <label class="stream-toggle">
+          <input type="checkbox" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-label">流式模式</span>
+        </label>
+        <span class="input-hint">Enter 发送 · Shift+Enter 换行</span>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="toast-container">
+  <div class="toast">检索完成，匹配到 3 个相关文档</div>
+</div>
+
+</body>
+</html>

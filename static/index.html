@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent 电商客服系统</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ============================================================
+         顶部导航栏 — 毛玻璃效果，柔光分割线
+         ============================================================ -->
+    <header id="topbar">
+        <div class="topbar-left">
+            <div class="logo-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M8 12l3 3 5-5"/>
+                </svg>
+            </div>
+            <h1 class="logo-text">AI Agent 电商客服</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="status-indicator" id="statusIndicator" title="系统状态">
+                <span class="status-dot"></span>
+                <span class="status-text">在线</span>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle" title="切换侧边栏">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <line x1="3" y1="12" x2="21" y2="12"/>
+                    <line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- ============================================================
+         主体布局：侧边栏 + 主聊天区域
+         ============================================================ -->
+    <div id="app-container">
+        <!-- 左侧边栏 — 玻璃拟态，可折叠 -->
+        <aside id="sidebar" class="sidebar-expanded">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2"/>
+                        <line x1="8" y1="21" x2="16" y2="21"/>
+                        <line x1="12" y1="17" x2="12" y2="21"/>
+                    </svg>
+                    知识库状态
+                </h3>
+                <div class="stat-row">
+                    <span class="stat-label">文档总数</span>
+                    <span class="stat-value" id="statDocCount">--</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Collection</span>
+                    <span class="stat-value stat-sub" id="statCollection">--</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">系统状态</span>
+                    <span class="stat-value stat-sub" id="statSystem">检查中...</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    检索来源统计
+                </h3>
+                <div class="source-stats" id="sourceStats">
+                    <p class="source-empty">暂无数据</p>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                    </svg>
+                    会话信息
+                </h3>
+                <div class="stat-row">
+                    <span class="stat-label">消息数</span>
+                    <span class="stat-value" id="statMsgCount">0</span>
+                </div>
+                <button class="btn-clear-session" id="btnClearSession">清除会话</button>
+            </div>
+        </aside>
+
+        <!-- 主聊天区域 -->
+        <main id="main-content">
+            <!-- 消息列表容器 -->
+            <div id="chatMessages" class="chat-messages">
+                <!-- 空状态欢迎界面 -->
+                <div id="welcomeScreen" class="welcome-screen">
+                    <div class="welcome-icon">
+                        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="8" r="4"/>
+                            <path d="M4 20c0-4 4-7 8-7s8 3 8 7"/>
+                        </svg>
+                    </div>
+                    <h2 class="welcome-title">你好，我是 AI 客服助手</h2>
+                    <p class="welcome-subtitle">我能帮你解答商品咨询、订单查询、售后服务等问题</p>
+                    <div class="quick-questions">
+                        <button class="quick-btn" data-question="如何查询我的订单状态？">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                            如何查询我的订单状态？
+                        </button>
+                        <button class="quick-btn" data-question="支持哪些支付方式？">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                            支持哪些支付方式？
+                        </button>
+                        <button class="quick-btn" data-question="退换货流程是什么？">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                            退换货流程是什么？
+                        </button>
+                        <button class="quick-btn" data-question="如何联系人工客服？">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                            如何联系人工客服？
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部输入栏 -->
+            <div id="inputArea" class="input-area">
+                <div class="input-row">
+                    <div class="input-wrapper">
+                        <textarea
+                            id="chatInput"
+                            class="chat-input"
+                            placeholder="输入你的问题..."
+                            rows="1"
+                            maxlength="2000"
+                        ></textarea>
+                        <button id="sendBtn" class="send-btn" title="发送消息">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"/>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="input-options">
+                    <label class="stream-toggle" title="切换流式/普通模式">
+                        <input type="checkbox" id="streamToggle" checked>
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-label">
+                            <span class="toggle-mode" id="toggleModeText">流式模式</span>
+                        </span>
+                    </label>
+                    <span class="input-hint" id="inputHint">Enter 发送 · Shift+Enter 换行</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast 消息容器 -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

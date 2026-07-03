@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐋 萌版图标预览 — 选一个最喜欢的</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #e0f2fe 0%, #fce7f3 50%, #d1fae5 100%);
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+}
+.container { text-align: center; padding: 40px 20px; }
+h1 { font-size: 28px; color: #1e293b; margin-bottom: 8px; }
+.sub { font-size: 14px; color: #64748b; margin-bottom: 36px; }
+.grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px; max-width: 1100px; margin: 0 auto;
+}
+.card {
+  background: white; border-radius: 20px; padding: 24px; box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease; cursor: pointer;
+}
+.card:hover { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(0,0,0,0.12); }
+.card.selected { border: 3px solid #6366f1; box-shadow: 0 0 0 4px rgba(99,102,241,0.2); }
+.card img { width: 160px; height: 160px; border-radius: 16px; object-fit: contain; background: #f8fafc; padding: 12px; }
+.card .label { margin-top: 12px; font-size: 13px; color: #475569; font-weight: 600; }
+.card .version { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+.btn {
+  margin-top: 36px; padding: 14px 40px; font-size: 16px; font-weight: 600; color: white;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6); border: none; border-radius: 14px;
+  cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 16px rgba(99,102,241,0.3);
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(99,102,241,0.4); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+#result { margin-top: 16px; font-size: 14px; color: #16a34a; font-weight: 600; display: none; }
+</style>
+<script>
+function selectCard(card, name) {
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  document.getElementById('selected').value = name;
+}
+</script>
+</head>
+<body>
+<div class="container">
+  <h1>🐋 萌版鲸鱼图标 — 四选一</h1>
+  <p class="sub">点击卡片选中你最喜欢的，选好告诉我编号即可~</p>
+  <div class="grid">
+    <!-- 版本 1 - 喷水鲸鱼 -->
+    <div class="card" onclick="selectCard(this,'v1')">
+      <img src="icons/A_super_cute_kawaii_whale_masc_2026-07-03T08-25-05.png" alt="01">
+      <div class="label">🐳 版本 ① — 喷水萌鲸</div>
+      <div class="version">经典蓝色鲸鱼 + 水花喷泉，最像 🐋</div>
+    </div>
+    <!-- 版本 2 - 云端购物鲸 -->
+    <div class="card" onclick="selectCard(this,'v2')">
+      <img src="icons/A_super_cute_kawaii_whale_masc_2026-07-03T08-25-08.png" alt="02">
+      <div class="label">🛒 版本 ② — 云端购物鲸</div>
+      <div class="version">坐云端+推购物车，电商感满满</div>
+    </div>
+    <!-- 版本 3 - 极简渐变鲸 -->
+    <div class="card" onclick="selectCard(this,'v3')">
+      <img src="icons/A_kawaii_whale_app_icon_design_2026-07-03T08-25-11.png" alt="03">
+      <div class="label">💜 版本 ③ — 极简爱心鲸</div>
+      <div class="version">极简扁平 + 爱心喷泉 + 渐变背景</div>
+    </div>
+    <!-- 版本 4 - 像素风 -->
+    <div class="card" onclick="selectCard(this,'v4')">
+      <img src="icons/A_super_cute_kawaii_pixel_art__2026-07-03T08-25-14.png" alt="04">
+      <div class="label">👑 版本 ④ — 像素皇冠鲸</div>
+      <div class="version">像素复古风 + 小王冠，超萌 GBA 感</div>
+    </div>
+  </div>
+  <input type="hidden" id="selected" value="">
+</div>
+</body>
+</html>
